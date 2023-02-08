@@ -17,6 +17,14 @@ func TestToInt(t *testing.T) {
 	assert.Equal(t, 8, ToInt(eight))
 }
 
+func TestToFloat64(t *testing.T) {
+	var eight interface{} = 8
+	assert.Equal(t, 8.00, ToFloat64(8))
+	assert.Equal(t, 8.31, ToFloat64(8.31))
+	assert.Equal(t, 8.31, ToFloat64("8.31"))
+	assert.Equal(t, 8.0, ToFloat64(eight))
+}
+
 func TestToString(t *testing.T) {
 	var foo interface{} = "one more time"
 	assert.Equal(t, "8", ToString(8))
