@@ -127,6 +127,8 @@ func ToStringMapStringE(i interface{}) (map[string]string, bool) {
 	var m = map[string]string{}
 
 	switch v := i.(type) {
+	case map[string]string:
+		return v, true
 	case map[interface{}]interface{}:
 		for k, v := range v {
 			kStr, _ := ToStringE(k)
@@ -144,6 +146,8 @@ func ToStringMapE(i interface{}) (map[string]interface{}, bool) {
 	var m = map[string]interface{}{}
 
 	switch v := i.(type) {
+	case map[string]interface{}:
+		return v, true
 	case map[interface{}]interface{}:
 		for k, val := range v {
 			kStr, _ := ToStringE(k)
@@ -160,6 +164,8 @@ func ToStringSliceE(i interface{}) ([]string, bool) {
 	var a []string
 
 	switch v := i.(type) {
+	case []string:
+		return v, true
 	case []interface{}:
 		for _, u := range v {
 			s, _ := ToStringE(u)
