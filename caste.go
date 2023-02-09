@@ -153,6 +153,26 @@ func ToStringMapStringE(i interface{}) (map[string]string, error) {
 	return m, fmt.Errorf("Unable to Cast %#v to map[string]string", i)
 }
 
+func ToStringMapBoolE(i interface{}) (map[string]bool, error) {
+	jww.DEBUG.Println("ToStringMapBoolE called on type:", reflect.TypeOf(i))
+
+	var m = map[string]bool{}
+
+	switch v := i.(type) {
+	case map[string]bool:
+		return v, nil
+	case map[interface{}]interface{}:
+		for k, val := range v {
+			kStr, _ := ToStringE(k)
+			vBool, _ := toBoolE(val)
+			m[kStr] = vBool
+		}
+		return m, nil
+	default:
+		return m, fmt.Errorf("Unable to Cast %#v to map[string]bool", i)
+	}
+}
+
 func ToStringMapE(i interface{}) (map[string]interface{}, error) {
 	jww.DEBUG.Println("ToStringMapE called on type:", reflect.TypeOf(i))
 

@@ -37,6 +37,9 @@ func TestToString(t *testing.T) {
 func TestMaps(t *testing.T) {
 	var m = map[interface{}]interface{}{"tag": "tags", "group": "groups"}
 	assert.Equal(t, map[string]interface{}{"tag": "tags", "group": "groups"}, ToStringMap(m))
+
+	var stringMapBool = map[interface{}]interface{}{"v1": true, "v2": false}
+	assert.Equal(t, ToStringMapBool(stringMapBool), map[string]bool{"v1": true, "v2": false})
 }
 
 func TestToBool(t *testing.T) {
