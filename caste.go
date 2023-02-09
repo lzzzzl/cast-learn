@@ -40,6 +40,8 @@ func toBoolE(i interface{}) (bool, error) {
 			return true, nil
 		}
 		return false, nil
+	case string:
+		return strconv.ParseBool(i.(string))
 	default:
 		return false, fmt.Errorf("Unable to Cast %#v to bool\n", i)
 	}
