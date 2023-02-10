@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"reflect"
 	"strconv"
+	"strings"
 	"time"
 
 	jww "github.com/spf13/jwalterweatherman"
@@ -26,6 +27,22 @@ func ToTimeE(i interface{}) (time.Time, error) {
 		return time.Time{}, fmt.Errorf("Unable to Cast %#v to Date/Time format: %s\n", i, e)
 	default:
 		return time.Time{}, fmt.Errorf("Unable to Cast %#v to Date/Time\n", i)
+	}
+}
+
+func ToDurationE(i interface{}) (time.Duration, error) {
+	i = indirect(i)
+	jww.DEBUG.Println("ToDurationE called on type:", reflect.TypeOf(i))
+
+	switch s := i.(type) {
+	case time.Duration:
+		return s, nil
+	case string:
+		d, err := time.ParseDuration(s)
+		return d, err
+	default:
+		err := fmt.Errorf("Unable to Cast %#v to Duration\n", i)
+		return time.Duration(0), err
 	}
 }
 
@@ -236,6 +253,8 @@ func ToStringSliceE(i interface{}) ([]string, error) {
 	switch v := i.(type) {
 	case []string:
 		return v, nil
+	case string:
+		return strings.Fields(v), nil
 	case []interface{}:
 		for _, u := range v {
 			s, _ := ToStringE(u)
@@ -246,6 +265,25 @@ func ToStringSliceE(i interface{}) ([]string, error) {
 	}
 
 	return a, fmt.Errorf("Unable to Cast %#v to []string", i)
+}
+
+func ToIntSliceE(i interface{}) ([]int, error) {
+	jww.DEBUG.Println("ToIntSliceE called on type:", reflect.TypeOf(i))
+
+	var a []int
+
+	switch v := i.(type) {
+	case []int:
+		return v, nil
+	case []interface{}:
+		for _, u := range v {
+			s, _ := ToIntE(u)
+			a = append(a, s)
+		}
+		return a, nil
+	default:
+		return a, fmt.Errorf("Unable to Cast %#v to []int", i)
+	}
 }
 
 func StringToDate(s string) (time.Time, error) {
