@@ -270,19 +270,30 @@ func ToStringSliceE(i interface{}) ([]string, error) {
 func ToIntSliceE(i interface{}) ([]int, error) {
 	jww.DEBUG.Println("ToIntSliceE called on type:", reflect.TypeOf(i))
 
-	var a []int
+	if i == nil {
+		return []int{}, fmt.Errorf("Unable to Cast %v to []int", i)
+	}
 
 	switch v := i.(type) {
 	case []int:
 		return v, nil
-	case []interface{}:
-		for _, u := range v {
-			s, _ := ToIntE(u)
-			a = append(a, s)
+	}
+
+	kind := reflect.TypeOf(i).Kind()
+	switch kind {
+	case reflect.Slice, reflect.Array:
+		s := reflect.ValueOf(i)
+		a := make([]int, s.Len())
+		for j := 0; j < s.Len(); j++ {
+			val, err := ToIntE(s.Index(j).Interface())
+			if err != nil {
+				return []int{}, fmt.Errorf("Unable to Cast %v to []int", i)
+			}
+			a[j] = val
 		}
 		return a, nil
 	default:
-		return a, fmt.Errorf("Unable to Cast %#v to []int", i)
+		return []int{}, fmt.Errorf("Unable to Cast %v to []int", i)
 	}
 }
 
