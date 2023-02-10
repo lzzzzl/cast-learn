@@ -36,7 +36,7 @@ func toBoolE(i interface{}) (bool, error) {
 	case nil:
 		return false, nil
 	case int:
-		if i.(int) > 0 {
+		if i.(int) != 0 {
 			return true, nil
 		}
 		return false, nil
