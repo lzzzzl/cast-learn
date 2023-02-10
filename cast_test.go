@@ -36,6 +36,35 @@ func TestToString(t *testing.T) {
 	assert.Equal(t, "", ToString(nil))
 }
 
+type foo struct {
+	val string
+}
+
+func (x foo) String() string {
+	return x.val
+}
+
+func TestStringerToString(t *testing.T) {
+	var x foo
+	x.val = "bar"
+
+	assert.Equal(t, "bar", ToString(x))
+}
+
+type fu struct {
+	val string
+}
+
+func (x fu) Error() string {
+	return x.val
+}
+
+func TestErrorToString(t *testing.T) {
+	var x fu
+	x.val = "bar"
+	assert.Equal(t, "bar", ToString(x))
+}
+
 func TestMaps(t *testing.T) {
 	var m = map[interface{}]interface{}{"tag": "tags", "group": "groups"}
 	assert.Equal(t, map[string]interface{}{"tag": "tags", "group": "groups"}, ToStringMap(m))

@@ -11,11 +11,6 @@ import (
 	jww "github.com/spf13/jwalterweatherman"
 )
 
-var (
-	errorType       = reflect.TypeOf((*error)(nil)).Elem()
-	fmtStringerType = reflect.TypeOf((*fmt.Stringer)(nil)).Elem()
-)
-
 func ToTimeE(i interface{}) (time.Time, error) {
 	jww.DEBUG.Println("ToTimeE called on type:", reflect.TypeOf(i))
 
@@ -135,12 +130,12 @@ func ToStringE(i interface{}) (string, error) {
 		return string(s), nil
 	case nil:
 		return "", nil
+	case fmt.Stringer:
+		return s.String(), nil
+	case error:
+		return s.Error(), nil
 	default:
-		v := reflect.ValueOf(i)
-		for !v.Type().Implements(fmtStringerType) && v.Type().Kind() == reflect.Ptr && !v.IsNil() {
-			v = v.Elem()
-		}
-		return fmt.Sprint(v), nil
+		return "", fmt.Errorf("Unable to Cast %#v to string", i)
 	}
 }
 
