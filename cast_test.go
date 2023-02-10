@@ -1,6 +1,7 @@
 package castlearn
 
 import (
+	"html/template"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -30,6 +31,7 @@ func TestToString(t *testing.T) {
 	assert.Equal(t, "8", ToString(8))
 	assert.Equal(t, "8.12", ToString(8.12))
 	assert.Equal(t, "one time", ToString([]byte("one time")))
+	assert.Equal(t, "one time", ToString(template.HTML("one time")))
 	assert.Equal(t, "one more time", ToString(foo))
 	assert.Equal(t, "", ToString(nil))
 }
