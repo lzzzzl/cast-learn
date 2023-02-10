@@ -12,6 +12,7 @@ import (
 )
 
 func ToTimeE(i interface{}) (time.Time, error) {
+	i = indirect(i)
 	jww.DEBUG.Println("ToTimeE called on type:", reflect.TypeOf(i))
 
 	switch s := i.(type) {
@@ -29,6 +30,7 @@ func ToTimeE(i interface{}) (time.Time, error) {
 }
 
 func toBoolE(i interface{}) (bool, error) {
+	i = indirect(i)
 	jww.DEBUG.Println("ToBoolE called on type:", reflect.TypeOf(i))
 
 	switch b := i.(type) {
@@ -49,6 +51,9 @@ func toBoolE(i interface{}) (bool, error) {
 }
 
 func ToFloat64E(i interface{}) (float64, error) {
+	i = indirect(i)
+	jww.DEBUG.Println("ToFloat64E called on type:", reflect.TypeOf(i))
+
 	switch s := i.(type) {
 	case float64:
 		return s, nil
@@ -79,6 +84,7 @@ func ToFloat64E(i interface{}) (float64, error) {
 }
 
 func ToIntE(i interface{}) (int, error) {
+	i = indirect(i)
 	jww.DEBUG.Println("ToIntE called on type:", reflect.TypeOf(i))
 
 	switch s := i.(type) {
@@ -115,6 +121,7 @@ func ToIntE(i interface{}) (int, error) {
 }
 
 func ToStringE(i interface{}) (string, error) {
+	i = indirectToStringerOrError(i)
 	jww.DEBUG.Println("ToStringE called on type:", reflect.TypeOf(i))
 
 	switch s := i.(type) {
@@ -266,4 +273,33 @@ func parseDate(s string, dates []string) (d time.Time, err error) {
 		}
 	}
 	return d, errors.New(fmt.Sprintf("Unable to parse date: %s", s))
+}
+
+func indirect(a interface{}) interface{} {
+	if a == nil {
+		return nil
+	}
+	if t := reflect.TypeOf(a); t.Kind() != reflect.Ptr {
+		// Avoid creating a reflect.Value if it's not a pointer.
+		return a
+	}
+	v := reflect.ValueOf(a)
+	for v.Kind() == reflect.Ptr && !v.IsNil() {
+		v = v.Elem()
+	}
+	return v.Interface()
+}
+
+func indirectToStringerOrError(a interface{}) interface{} {
+	if a == nil {
+		return nil
+	}
+
+	v := reflect.ValueOf(a)
+	for !v.Type().Implements(reflect.TypeOf((*error)(nil)).Elem()) &&
+		!v.Type().Implements(reflect.TypeOf((*fmt.Stringer)(nil)).Elem()) &&
+		v.Kind() == reflect.Ptr && !v.IsNil() {
+		v = v.Elem()
+	}
+	return v.Interface()
 }
