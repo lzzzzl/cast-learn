@@ -32,6 +32,7 @@ func TestToString(t *testing.T) {
 	assert.Equal(t, "8.12", ToString(8.12))
 	assert.Equal(t, "one time", ToString([]byte("one time")))
 	assert.Equal(t, "one time", ToString(template.HTML("one time")))
+	assert.Equal(t, "http://somehost.foo", ToString(template.URL("http://somehost.foo")))
 	assert.Equal(t, "one more time", ToString(foo))
 	assert.Equal(t, "", ToString(nil))
 }
