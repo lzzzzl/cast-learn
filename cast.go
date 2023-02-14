@@ -37,6 +37,11 @@ func ToStringMapString(i interface{}) map[string]string {
 	return v
 }
 
+func ToStringMapStringSlice(i interface{}) map[string][]string {
+	v, _ := ToStringMapStringSliceE(i)
+	return v
+}
+
 func ToStringMapBool(i interface{}) map[string]bool {
 	v, _ := ToStringMapBoolE(i)
 	return v

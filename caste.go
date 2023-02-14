@@ -173,10 +173,23 @@ func ToStringMapStringE(i interface{}) (map[string]string, error) {
 	switch v := i.(type) {
 	case map[string]string:
 		return v, nil
-	case map[interface{}]interface{}:
-		for k, v := range v {
+	case map[string]interface{}:
+		for k, val := range v {
 			kStr, _ := ToStringE(k)
-			vStr, _ := ToStringE(v)
+			vStr, _ := ToStringE(val)
+			m[kStr] = vStr
+		}
+		return m, nil
+	case map[interface{}]string:
+		for k, val := range v {
+			kStr, _ := ToStringE(k)
+			vStr, _ := ToStringE(val)
+			m[kStr] = vStr
+		}
+	case map[interface{}]interface{}:
+		for k, val := range v {
+			kStr, _ := ToStringE(k)
+			vStr, _ := ToStringE(val)
 			m[kStr] = vStr
 		}
 	default:
@@ -192,7 +205,28 @@ func ToStringMapStringSliceE(i interface{}) (map[string][]string, error) {
 	var m = map[string][]string{}
 
 	switch v := i.(type) {
-	case map[interface{}]interface{}:
+	case map[string][]string:
+		return v, nil
+	case map[string][]interface{}:
+		for k, val := range v {
+			m[ToString(k)] = ToStringSlice(val)
+		}
+		return m, nil
+	case map[string]string:
+		for k, val := range v {
+			m[ToString(k)] = []string{val}
+		}
+	case map[string]interface{}:
+		for k, val := range v {
+			m[ToString(k)] = []string{ToString(val)}
+		}
+		return m, nil
+	case map[interface{}][]string:
+		for k, val := range v {
+			m[ToString(k)] = ToStringSlice(val)
+		}
+		return m, nil
+	case map[interface{}]string:
 		for k, val := range v {
 			m[ToString(k)] = ToStringSlice(val)
 		}
@@ -202,27 +236,20 @@ func ToStringMapStringSliceE(i interface{}) (map[string][]string, error) {
 			m[ToString(k)] = ToStringSlice(val)
 		}
 		return m, nil
-	case map[string][]interface{}:
+	case map[interface{}]interface{}:
 		for k, val := range v {
-			m[ToString(k)] = ToStringSlice(val)
+			key, err := ToStringE(k)
+			if err != nil {
+				return m, fmt.Errorf("Unable to Cast %#v to map[string][]string", i)
+			}
+			value, err := ToStringSliceE(val)
+			if err != nil {
+				return m, fmt.Errorf("Unable to Cast %#v to map[string][]string", i)
+			}
+			m[key] = value
 		}
-		return m, nil
-	case map[string]interface{}:
-		for k, val := range v {
-			m[ToString(k)] = []string{ToString(val)}
-		}
-		return m, nil
-	case map[string][]string:
-		return v, nil
-	case map[string]string:
-		for k, val := range v {
-			m[ToString(k)] = []string{val}
-		}
-	default:
-		fmt.Printf("unexpected type %T", v)
-		return m, fmt.Errorf("Unable to Cast %#v to map[string][]string", i)
 	}
-	return m, fmt.Errorf("Unable to Cast %#v to map[string][]string", i)
+	return m, nil
 }
 
 func ToStringMapBoolE(i interface{}) (map[string]bool, error) {
@@ -302,7 +329,11 @@ func ToStringSliceE(i interface{}) ([]string, error) {
 			a = append(a, s)
 		}
 	default:
-		return a, fmt.Errorf("Unable to Cast %#v to []string", i)
+		str, err := ToStringE(v)
+		if err != nil {
+			return a, fmt.Errorf("Unable to Cast %#v to []string", i)
+		}
+		return []string{str}, nil
 	}
 
 	return a, fmt.Errorf("Unable to Cast %#v to []string", i)
