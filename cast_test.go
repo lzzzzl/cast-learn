@@ -3,6 +3,7 @@ package castlearn
 import (
 	"html/template"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -146,4 +147,13 @@ func TestIndirectPointers(t *testing.T) {
 
 	assert.Equal(t, 13, ToInt(y))
 	assert.Equal(t, 13, ToInt(z))
+}
+
+func TestToDuration(t *testing.T) {
+	a := time.Second * 5
+	ai := int64(a)
+	b := time.Second * 5
+	bf := float64(b)
+	assert.Equal(t, ToDuration(ai), a)
+	assert.Equal(t, ToDuration(bf), b)
 }
