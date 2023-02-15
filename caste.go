@@ -13,15 +13,21 @@ import (
 func ToTimeE(i interface{}) (time.Time, error) {
 	i = indirect(i)
 
-	switch s := i.(type) {
+	switch v := i.(type) {
 	case time.Time:
-		return s, nil
+		return v, nil
 	case string:
-		d, e := StringToDate(s)
+		d, e := StringToDate(v)
 		if e == nil {
 			return d, nil
 		}
 		return time.Time{}, fmt.Errorf("Unable to Cast %#v to Date/Time format: %s\n", i, e)
+	case int:
+		return time.Unix(int64(v), 0), nil
+	case int32:
+		return time.Unix(int64(v), 0), nil
+	case int64:
+		return time.Unix(v, 0), nil
 	default:
 		return time.Time{}, fmt.Errorf("Unable to Cast %#v to Date/Time\n", i)
 	}
