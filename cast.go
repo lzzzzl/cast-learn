@@ -3,7 +3,7 @@ package castlearn
 import "time"
 
 func ToBool(i interface{}) bool {
-	v, _ := toBoolE(i)
+	v, _ := ToBoolE(i)
 	return v
 }
 
@@ -59,6 +59,11 @@ func ToStringMap(i interface{}) map[string]interface{} {
 
 func ToSlice(i interface{}) []interface{} {
 	v, _ := ToSliceE(i)
+	return v
+}
+
+func ToBoolSlice(i interface{}) []bool {
+	v, _ := ToBoolSliceE(i)
 	return v
 }
 

@@ -57,7 +57,7 @@ func ToDurationE(i interface{}) (time.Duration, error) {
 }
 
 // ToBoolE casts an empty interface to a bool.
-func toBoolE(i interface{}) (bool, error) {
+func ToBoolE(i interface{}) (bool, error) {
 	i = indirect(i)
 	jww.TRACE.Println("ToBoolE called on type:", reflect.TypeOf(i))
 
@@ -330,7 +330,7 @@ func ToStringMapBoolE(i interface{}) (map[string]bool, error) {
 	case map[interface{}]interface{}:
 		for k, val := range v {
 			kStr, _ := ToStringE(k)
-			vBool, _ := toBoolE(val)
+			vBool, _ := ToBoolE(val)
 			m[kStr] = vBool
 		}
 		return m, nil
@@ -378,6 +378,37 @@ func ToSliceE(i interface{}) ([]interface{}, error) {
 		return s, nil
 	default:
 		return s, fmt.Errorf("Unable to Cast %#v of type %v to []interface{}", i, reflect.TypeOf(i))
+	}
+}
+
+// ToBoolSliceE casts an empty interface to a []bool.
+func ToBoolSliceE(i interface{}) ([]bool, error) {
+	jww.TRACE.Println("ToBoolSliceE called on type:", reflect.TypeOf(i))
+
+	if i == nil {
+		return []bool{}, fmt.Errorf("Unable to Cast %#v to []bool", i)
+	}
+
+	switch v := i.(type) {
+	case []bool:
+		return v, nil
+	}
+
+	kind := reflect.TypeOf(i).Kind()
+	switch kind {
+	case reflect.Slice, reflect.Array:
+		s := reflect.ValueOf(i)
+		a := make([]bool, s.Len())
+		for j := 0; j < s.Len(); j++ {
+			val, err := ToBoolE(s.Index(j).Interface())
+			if err != nil {
+				return []bool{}, fmt.Errorf("Unable to Cast %#v to []bool", i)
+			}
+			a[j] = val
+		}
+		return a, nil
+	default:
+		return []bool{}, fmt.Errorf("Unable to Cast %#v to []bool", i)
 	}
 }
 
