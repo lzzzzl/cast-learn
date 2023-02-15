@@ -107,6 +107,9 @@ func TestMaps(t *testing.T) {
 	var stringMapBool = map[interface{}]interface{}{"v1": true, "v2": false}
 	assert.Equal(t, ToStringMapBool(stringMapBool), map[string]bool{"v1": true, "v2": false})
 
+	var stringMapInterface1 = map[string]interface{}{"key 1": []string{"value 1"}, "key 2": []string{"value 2"}}
+	var stringMapInterfaceResult1 = map[string][]string{"key 1": []string{"value 1"}, "key 2": []string{"value 2"}}
+
 	// ToStringMapString tests
 	assert.Equal(t, ToStringMapString(stringMapString), stringMapString)
 	assert.Equal(t, ToStringMapString(stringMapInterface), stringMapString)
@@ -124,6 +127,7 @@ func TestMaps(t *testing.T) {
 	assert.Equal(t, ToStringMapStringSlice(interfaceMapInterfaceSlice), stringMapStringSlice)
 	assert.Equal(t, ToStringMapStringSlice(interfaceMapString), stringMapStringSingleSliceFieldsResult)
 	assert.Equal(t, ToStringMapStringSlice(interfaceMapInterface), stringMapStringSingleSliceFieldsResult)
+	assert.Equal(t, ToStringMapStringSlice(stringMapInterface1), stringMapInterfaceResult1)
 }
 
 func TestSlice(t *testing.T) {
