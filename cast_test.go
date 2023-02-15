@@ -166,6 +166,14 @@ func TestToBool(t *testing.T) {
 	assert.Equal(t, ToBool(-1), true)
 }
 
+func BenchmarkTooBool(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		if !ToBool(true) {
+			b.Fatal("ToBool returned false")
+		}
+	}
+}
+
 func TestIndirectPointers(t *testing.T) {
 	x := 13
 	y := &x
