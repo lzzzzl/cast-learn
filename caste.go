@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-// ToTimeE casts an empty interface to time.Time.
+// ToTimeE casts an interface to a time.Time type.
 func ToTimeE(i interface{}) (time.Time, error) {
 	i = indirect(i)
 
@@ -33,7 +33,7 @@ func ToTimeE(i interface{}) (time.Time, error) {
 	}
 }
 
-// ToDurationE casts an empty interface to time.Duration.
+// ToDurationE casts an interface to a time.Duration type.
 func ToDurationE(i interface{}) (time.Duration, error) {
 	i = indirect(i)
 
@@ -58,7 +58,7 @@ func ToDurationE(i interface{}) (time.Duration, error) {
 	}
 }
 
-// ToBoolE casts an empty interface to a bool.
+// ToBoolE casts an interface to a bool type.
 func ToBoolE(i interface{}) (bool, error) {
 	i = indirect(i)
 
@@ -79,7 +79,7 @@ func ToBoolE(i interface{}) (bool, error) {
 	}
 }
 
-// ToFloat64E casts an empty interface to a float64.
+// ToFloat64E casts an interface to a float64 type.
 func ToFloat64E(i interface{}) (float64, error) {
 	i = indirect(i)
 
@@ -110,6 +110,7 @@ func ToFloat64E(i interface{}) (float64, error) {
 	}
 }
 
+// ToInt64E casts an interface to an int64 type.
 func ToInt64E(i interface{}) (int64, error) {
 	i = indirect(i)
 
@@ -144,7 +145,7 @@ func ToInt64E(i interface{}) (int64, error) {
 	}
 }
 
-// ToInt32E casts an empty interface to an int32.
+// ToInt32E casts an interface to an int32 type.
 func ToInt32E(i interface{}) (int32, error) {
 	i = indirect(i)
 
@@ -179,7 +180,7 @@ func ToInt32E(i interface{}) (int32, error) {
 	}
 }
 
-// ToInt16E casts an empty interface to an int16.
+// ToInt16E casts an interface to an int16 type.
 func ToInt16E(i interface{}) (int16, error) {
 	i = indirect(i)
 
@@ -214,7 +215,7 @@ func ToInt16E(i interface{}) (int16, error) {
 	}
 }
 
-// ToInt8E casts an empty interface to an int8.
+// ToInt8E casts an interface to an int8 type.
 func ToInt8E(i interface{}) (int8, error) {
 	i = indirect(i)
 
@@ -249,7 +250,7 @@ func ToInt8E(i interface{}) (int8, error) {
 	}
 }
 
-// ToIntE casts an empty interface to an int.
+// ToIntE casts an interface to an int type.
 func ToIntE(i interface{}) (int, error) {
 	i = indirect(i)
 
@@ -284,7 +285,7 @@ func ToIntE(i interface{}) (int, error) {
 	}
 }
 
-// ToStringE casts an empty interface to a string.
+// ToStringE casts an interface to a string type.
 func ToStringE(i interface{}) (string, error) {
 	i = indirectToStringerOrError(i)
 
@@ -322,7 +323,7 @@ func ToStringE(i interface{}) (string, error) {
 	}
 }
 
-// ToStringMapStringE casts an empty interface to a map[string]string.
+// ToStringMapStringE casts an interface to a map[string]string type.
 func ToStringMapStringE(i interface{}) (map[string]string, error) {
 	var m = map[string]string{}
 
@@ -355,7 +356,7 @@ func ToStringMapStringE(i interface{}) (map[string]string, error) {
 	return m, fmt.Errorf("Unable to Cast %#v to map[string]string", i)
 }
 
-// ToStringMapStringSliceE casts an empty interface to a map[string][]string.
+// ToStringMapStringSliceE casts an interface to a map[string][]string type.
 func ToStringMapStringSliceE(i interface{}) (map[string][]string, error) {
 	var m = map[string][]string{}
 
@@ -416,7 +417,7 @@ func ToStringMapStringSliceE(i interface{}) (map[string][]string, error) {
 	return m, nil
 }
 
-// ToStringMapBoolE casts an empty interface to a map[string]bool.
+// ToStringMapBoolE casts an interface to a map[string]bool type.
 func ToStringMapBoolE(i interface{}) (map[string]bool, error) {
 	var m = map[string]bool{}
 
@@ -435,7 +436,7 @@ func ToStringMapBoolE(i interface{}) (map[string]bool, error) {
 	}
 }
 
-// ToStringMapE casts an empty interface to a map[string]interface{}.
+// ToStringMapE casts an interface to a map[string]interface{} type.
 func ToStringMapE(i interface{}) (map[string]interface{}, error) {
 	var m = map[string]interface{}{}
 
@@ -453,7 +454,7 @@ func ToStringMapE(i interface{}) (map[string]interface{}, error) {
 	}
 }
 
-// ToSliceE casts an empty interface to a []interface{}.
+// ToSliceE casts an interface to a []interface{} type.
 func ToSliceE(i interface{}) ([]interface{}, error) {
 	var s []interface{}
 
@@ -473,7 +474,7 @@ func ToSliceE(i interface{}) ([]interface{}, error) {
 	}
 }
 
-// ToBoolSliceE casts an empty interface to a []bool.
+// ToBoolSliceE casts an interface to a []bool type.
 func ToBoolSliceE(i interface{}) ([]bool, error) {
 	if i == nil {
 		return []bool{}, fmt.Errorf("Unable to Cast %#v to []bool", i)
@@ -502,7 +503,7 @@ func ToBoolSliceE(i interface{}) ([]bool, error) {
 	}
 }
 
-// ToStringSliceE casts an empty interface to a []string.
+// ToStringSliceE casts an interface to a []string type.
 func ToStringSliceE(i interface{}) ([]string, error) {
 	var a []string
 
@@ -528,7 +529,7 @@ func ToStringSliceE(i interface{}) ([]string, error) {
 	}
 }
 
-// ToIntSliceE casts an empty interface to a []int.
+// ToIntSliceE casts an interface to a []int type.
 func ToIntSliceE(i interface{}) ([]int, error) {
 	if i == nil {
 		return []int{}, fmt.Errorf("Unable to Cast %v to []int", i)
@@ -557,7 +558,9 @@ func ToIntSliceE(i interface{}) ([]int, error) {
 	}
 }
 
-// StringToDate casts an empty interface to a time.Time.
+// StringToDate attempts to parse a string into a time.Time type using a
+// predefined list of formats.  If no suitable format is found, an error is
+// returned.
 func StringToDate(s string) (time.Time, error) {
 	return parseDate(s, []string{
 		time.RFC3339,
