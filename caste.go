@@ -1,6 +1,7 @@
 package castlearn
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"html/template"
@@ -826,6 +827,9 @@ func ToStringMapStringE(i interface{}) (map[string]string, error) {
 			m[ToString(k)] = ToString(val)
 		}
 		return m, nil
+	case string:
+		err := jsonStringToObject(v, &m)
+		return m, err
 	default:
 		return m, fmt.Errorf("unable to cast %#v of type %T to map[string]string", i, i)
 	}
@@ -886,6 +890,9 @@ func ToStringMapStringSliceE(i interface{}) (map[string][]string, error) {
 			}
 			m[key] = value
 		}
+	case string:
+		err := jsonStringToObject(v, &m)
+		return m, err
 	default:
 		return m, fmt.Errorf("unable to Cast %#v of type %T to map[string]string\n", i, i)
 	}
@@ -909,6 +916,9 @@ func ToStringMapBoolE(i interface{}) (map[string]bool, error) {
 		return m, nil
 	case map[string]bool:
 		return v, nil
+	case string:
+		err := jsonStringToObject(v, &m)
+		return m, err
 	default:
 		return m, fmt.Errorf("unable to cast %#v of type %T to map[string]bool", i, i)
 	}
@@ -927,6 +937,9 @@ func ToStringMapE(i interface{}) (map[string]interface{}, error) {
 			m[kStr] = val
 		}
 		return m, nil
+	case string:
+		err := jsonStringToObject(v, &m)
+		return m, err
 	default:
 		return m, fmt.Errorf("unable to Cast %#v of type %T to map[string]interface{}\n", i, i)
 	}
@@ -1128,4 +1141,11 @@ func indirectToStringerOrError(a interface{}) interface{} {
 		v = v.Elem()
 	}
 	return v.Interface()
+}
+
+// jsonStringToObject attempts to unmarshall a string as JSON into
+// the object passed as pointer.
+func jsonStringToObject(s string, v interface{}) error {
+	data := []byte(s)
+	return json.Unmarshal(data, v)
 }
