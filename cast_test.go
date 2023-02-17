@@ -32,6 +32,14 @@ func TestToUintE(t *testing.T) {
 		{"8", 8, false},
 		{nil, 0, false},
 		// errors
+		{int(-8), 0, true},
+		{int8(-8), 0, true},
+		{int16(-8), 0, true},
+		{int32(-8), 0, true},
+		{int64(-8), 0, true},
+		{float32(-8.31), 0, true},
+		{float64(-8.31), 0, true},
+		{"-8", 0, true},
 		{"test", 0, true},
 		{testing.T{}, 0, true},
 	}
@@ -77,6 +85,14 @@ func TestToUint64E(t *testing.T) {
 		{"8", 8, false},
 		{nil, 0, false},
 		// errors
+		{int(-8), 0, true},
+		{int8(-8), 0, true},
+		{int16(-8), 0, true},
+		{int32(-8), 0, true},
+		{int64(-8), 0, true},
+		{float32(-8.31), 0, true},
+		{float64(-8.31), 0, true},
+		{"-8", 0, true},
 		{"test", 0, true},
 		{testing.T{}, 0, true},
 	}
@@ -122,6 +138,14 @@ func TestToUint32E(t *testing.T) {
 		{"8", 8, false},
 		{nil, 0, false},
 		// errors
+		{int(-8), 0, true},
+		{int8(-8), 0, true},
+		{int16(-8), 0, true},
+		{int32(-8), 0, true},
+		{int64(-8), 0, true},
+		{float32(-8.31), 0, true},
+		{float64(-8.31), 0, true},
+		{"-8", 0, true},
 		{"test", 0, true},
 		{testing.T{}, 0, true},
 	}
@@ -167,6 +191,14 @@ func TestToUint16E(t *testing.T) {
 		{"8", 8, false},
 		{nil, 0, false},
 		// errors
+		{int(-8), 0, true},
+		{int8(-8), 0, true},
+		{int16(-8), 0, true},
+		{int32(-8), 0, true},
+		{int64(-8), 0, true},
+		{float32(-8.31), 0, true},
+		{float64(-8.31), 0, true},
+		{"-8", 0, true},
 		{"test", 0, true},
 		{testing.T{}, 0, true},
 	}
@@ -212,6 +244,14 @@ func TestToUint8E(t *testing.T) {
 		{"8", 8, false},
 		{nil, 0, false},
 		// errors
+		{int(-8), 0, true},
+		{int8(-8), 0, true},
+		{int16(-8), 0, true},
+		{int32(-8), 0, true},
+		{int64(-8), 0, true},
+		{float32(-8.31), 0, true},
+		{float64(-8.31), 0, true},
+		{"-8", 0, true},
 		{"test", 0, true},
 		{testing.T{}, 0, true},
 	}
