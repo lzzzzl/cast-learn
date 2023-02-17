@@ -327,28 +327,22 @@ func ToStringMapStringE(i interface{}) (map[string]string, error) {
 		return v, nil
 	case map[string]interface{}:
 		for k, val := range v {
-			kStr, _ := ToStringE(k)
-			vStr, _ := ToStringE(val)
-			m[kStr] = vStr
+			m[ToString(k)] = ToString(val)
 		}
 		return m, nil
 	case map[interface{}]string:
 		for k, val := range v {
-			kStr, _ := ToStringE(k)
-			vStr, _ := ToStringE(val)
-			m[kStr] = vStr
+			m[ToString(k)] = ToString(val)
 		}
+		return m, nil
 	case map[interface{}]interface{}:
 		for k, val := range v {
-			kStr, _ := ToStringE(k)
-			vStr, _ := ToStringE(val)
-			m[kStr] = vStr
+			m[ToString(k)] = ToString(val)
 		}
+		return m, nil
 	default:
-		return m, fmt.Errorf("unable to Cast %#v of type %T to map[string]string\n", i, i)
+		return m, fmt.Errorf("unable to cast %#v of type %T to map[string]string", i, i)
 	}
-
-	return m, fmt.Errorf("unable to Cast %#v of type %T to map[string]string\n", i, i)
 }
 
 // ToStringMapStringSliceE casts an interface to a map[string][]string type.
@@ -417,17 +411,20 @@ func ToStringMapBoolE(i interface{}) (map[string]bool, error) {
 	var m = map[string]bool{}
 
 	switch v := i.(type) {
-	case map[string]bool:
-		return v, nil
 	case map[interface{}]interface{}:
 		for k, val := range v {
-			kStr, _ := ToStringE(k)
-			vBool, _ := ToBoolE(val)
-			m[kStr] = vBool
+			m[ToString(k)] = ToBool(val)
 		}
 		return m, nil
+	case map[string]interface{}:
+		for k, val := range v {
+			m[ToString(k)] = ToBool(val)
+		}
+		return m, nil
+	case map[string]bool:
+		return v, nil
 	default:
-		return m, fmt.Errorf("unable to Cast %#v of type %T to map[string]bool\n", i, i)
+		return m, fmt.Errorf("unable to cast %#v of type %T to map[string]bool", i, i)
 	}
 }
 
